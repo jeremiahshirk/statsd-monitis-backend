@@ -3,29 +3,17 @@
 var https = require('https');
 var querystring = require('querystring');
 
-var api_config = require('./api_config.js').api_config()
-var checksum = require('./auth.js').checksum
+var api_config = require('./api_config.js').api_config();
+var checksum = require('./auth.js').checksum;
+var RequestParams = require('./request_params.js').RequestParams;
 
-var base_params = {
-  apikey: api_config['monitis_apikey'],
-  // Omit defaults, to make smaller requests
-  // output: 'JSON',
-  // version: '2',
-  // validation: 'HMACSHA1'
-}
 
 function format_query_params(params) {
   return querystring.stringify(params);
 }
 
 function get(host, path, call_params, res_cb) {
-  var api_params = new Object();
-  for (var key in base_params) {
-    api_params[key] = base_params[key];
-  }  
-  for (var key in call_params) {
-    api_params[key] = call_params[key];
-  }
+  var api_params = RequestParams(call_params);
   call_checksum = checksum(api_config['monitis_secretkey'],api_params);
   api_params['checksum'] = call_checksum;
   query = format_query_params(api_params);
@@ -36,13 +24,7 @@ function get(host, path, call_params, res_cb) {
 }
 
 function post(host, path, call_params, res_cb) {
-  var api_params = new Object();
-  for (var key in base_params) {
-    api_params[key] = base_params[key];
-  }  
-  for (var key in call_params) {
-    api_params[key] = call_params[key];
-  }
+  var api_params = RequestParams(call_params);
   call_checksum = checksum(api_config['monitis_secretkey'],api_params);
   api_params['checksum'] = call_checksum;
   post_data = format_query_params(api_params);
@@ -55,6 +37,7 @@ function post(host, path, call_params, res_cb) {
       'Content-Length': post_data.length
     }
   };
+  
   var post_req = https.request(post_options, res_cb)
     .on('error', function(e) {
       console.error(e);
@@ -80,10 +63,10 @@ function monitis_post_timestamp() {
     + ":" + pad(d.getUTCSeconds())
 }
 
-function monitis_post(params, res_cb) {
-  var params2 = new Object(params);
-  params2['timestamp'] = monitis_post_timestamp();
-  post(api_config['host'], api_config['path'], params2, res_cb);
+function monitis_post(call_params, res_cb) {
+  var api_params = RequestParams(call_params);
+  api_params['timestamp'] = monitis_post_timestamp();
+  post(api_config['host'], api_config['path'], api_params, res_cb);
 }
 
 module.exports.post = monitis_post
@@ -91,5 +74,6 @@ module.exports.get = monitis_get
 
 // Testing only if this files is run directly
 if (!module.parent) {
-  process.stdout.write(checksum('notReallyASecret',{key2: 'foo', key1: 'bar'}) + "\n");
+  process.stdout.write(checksum('notReallyASecret',
+                                {key2: 'foo', key1: 'bar'}) + "\n");
 }
