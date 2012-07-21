@@ -80,9 +80,28 @@ function encode_results(params) {
 }
 
 // TODO determine best option for exporting names between files
-// function add_monitor_results()
 module.exports.get_monitor_info = function(monitorId, res_cb) {
   monitis_get({action: 'getMonitorInfo', monitorId: monitorId},res_cb);
+}
+
+module.exports.get_monitors = function(tag, res_cb) {
+  params = {action: 'getMonitors', tag: tag};
+  monitis_get(params,res_cb);
+}
+
+module.exports.add_result = function(monitorId,results,res_cb) {
+  // POST: action, monitorId, checktime, results
+  monitis_post({
+    action: 'addResult',
+    monitorId: monitorId,
+    checktime: checktime(),
+    results: encode_results(results)
+  },
+  res_cb);
+}
+
+module.exports.add_result_by_name = function(name, results, res_cb) {
+  // need to look up monitor name, and get monitorId
 }
 
 module.exports.post = monitis_post
