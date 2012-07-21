@@ -79,10 +79,15 @@ function encode_results(params) {
   return querystring.stringify(params,';', ':');
 }
 
+// TODO determine best option for exporting names between files
 // function add_monitor_results()
+module.exports.get_monitor_info = function(monitorId, res_cb) {
+  monitis_get({action: 'getMonitorInfo', monitorId: monitorId},res_cb);
+}
 
 module.exports.post = monitis_post
 module.exports.get = monitis_get
+// module.exports.get_monitor_info = get_monitor_info
 
 // Testing only if this files is run directly
 if (!module.parent) {
