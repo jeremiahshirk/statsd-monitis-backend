@@ -10,6 +10,5 @@ function print_chunk(chunk) {
   process.stdout.write(chunk + "\n");
 }
 
-// invalid checksum when both are run!!
 monitis.get({action: 'getMonitors'},res_cb);
 monitis.post({action: 'deleteMonitor', monitorId: '4607'}, res_cb);
