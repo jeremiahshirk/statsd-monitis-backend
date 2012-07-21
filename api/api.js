@@ -69,6 +69,18 @@ function monitis_post(call_params, res_cb) {
   post(api_config['host'], api_config['path'], api_params, res_cb);
 }
 
+function checktime() {
+  // number of milliseconds since January 1, 1970, 00:00:00 GMT
+  // aka epoch time
+  return new Date().getTime();
+}
+
+function encode_results(params) {
+  return querystring.stringify(params,';', ':');
+}
+
+// function add_monitor_results()
+
 module.exports.post = monitis_post
 module.exports.get = monitis_get
 
@@ -76,4 +88,10 @@ module.exports.get = monitis_get
 if (!module.parent) {
   process.stdout.write(checksum('notReallyASecret',
                                 {key2: 'foo', key1: 'bar'}) + "\n");
+  process.stdout.write(
+    "checktime() -> " + checktime() + "\n"
+  );
+  process.stdout.write(
+    "encode_results: " + encode_results({"foo 2": 1.1, bar: "baz"}) + "\n"
+  );
 }
