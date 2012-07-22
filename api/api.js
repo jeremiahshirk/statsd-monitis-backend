@@ -81,7 +81,7 @@ function encode_results(params) {
 
 function res_parser(callback){
   // return a function that can be used as an HTTPS response callback
-  // which in turn calls the arg callback with the parsed response
+  // which in turn calls the arg callback with the parsed JSON body
   var parser = function(response) {
     var body = '';
     var append_chunk = function(chunk) {
@@ -101,9 +101,16 @@ module.exports.get_monitor_info = function(monitorId, res_cb) {
   monitis_get({action: 'getMonitorInfo', monitorId: monitorId},res_cb);
 }
 
+var monitor_name_cache = new Object();
 module.exports.get_monitors = function(tag, res_cb) {
   params = {action: 'getMonitors', tag: tag};
-  monitis_get(params,res_cb);
+  var update_name_cache = function(monitors) {
+    for(var i=0; i<monitors.length; i++) {
+      monitor_name_cache[monitors[i]['name']] = monitors[i]['id']
+    }
+    res_cb(monitors);
+  }
+  monitis_get(params,update_name_cache);
 }
 
 module.exports.add_result = function(monitorId,results,res_cb) {
