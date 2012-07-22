@@ -47,7 +47,7 @@ function post(host, path, call_params, res_cb) {
 }
 
 function monitis_get(params, res_cb) {
-  get(api_config['host'], api_config['path'], params, res_cb);
+  get(api_config['host'], api_config['path'], params, res_parser(res_cb));
 }
 
 function monitis_post_timestamp() {
@@ -66,7 +66,7 @@ function monitis_post_timestamp() {
 function monitis_post(call_params, res_cb) {
   var api_params = RequestParams(call_params);
   api_params['timestamp'] = monitis_post_timestamp();
-  post(api_config['host'], api_config['path'], api_params, res_cb);
+  post(api_config['host'], api_config['path'], api_params, res_parser(res_cb));
 }
 
 function checktime() {
@@ -77,6 +77,23 @@ function checktime() {
 
 function encode_results(params) {
   return querystring.stringify(params,';', ':');
+}
+
+function res_parser(callback){
+  // return a function that can be used as an HTTPS response callback
+  // which in turn calls the arg callback with the parsed response
+  var parser = function(response) {
+    var body = '';
+    var append_chunk = function(chunk) {
+      body += chunk;
+    }
+    var parse_body = function() {
+      callback(body);
+    }
+    response.on('data', append_chunk);
+    response.on('end', parse_body);
+  }
+  return parser;
 }
 
 // TODO determine best option for exporting names between files
@@ -102,6 +119,10 @@ module.exports.add_result = function(monitorId,results,res_cb) {
 
 module.exports.add_result_by_name = function(name, results, res_cb) {
   // need to look up monitor name, and get monitorId
+  // if the id isn't in the table, look it up, setting this as the callback
+  // need to change a parameter to know if we've been here before
+  
+  
 }
 
 module.exports.post = monitis_post
