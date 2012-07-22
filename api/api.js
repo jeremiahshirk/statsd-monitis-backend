@@ -88,7 +88,7 @@ function res_parser(callback){
       body += chunk;
     }
     var parse_body = function() {
-      callback(body);
+      callback(JSON.parse(body));
     }
     response.on('data', append_chunk);
     response.on('end', parse_body);
