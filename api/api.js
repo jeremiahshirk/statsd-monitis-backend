@@ -14,6 +14,8 @@ function format_query_params(params) {
 
 function get(host, path, call_params, res_cb) {
   var api_params = RequestParams(call_params);
+  // debugging 
+  console.log('GET: \n', api_params);
   call_checksum = checksum(api_config['monitis_secretkey'],api_params);
   api_params['checksum'] = call_checksum;
   query = format_query_params(api_params);
@@ -25,6 +27,8 @@ function get(host, path, call_params, res_cb) {
 
 function post(host, path, call_params, res_cb) {
   var api_params = RequestParams(call_params);
+  // debugging 
+  console.log('POST: \n', api_params);
   call_checksum = checksum(api_config['monitis_secretkey'],api_params);
   api_params['checksum'] = call_checksum;
   post_data = format_query_params(api_params);
