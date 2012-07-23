@@ -86,13 +86,17 @@ function encode_results(params) {
 function res_parser(callback){
   // return a function that can be used as an HTTPS response callback
   // which in turn calls the arg callback with the parsed JSON body
-  var parser = function(response) {
+  var parser = function parser(response) {
     var body = '';
     var append_chunk = function(chunk) {
       body += chunk;
     }
     var parse_body = function() {
-      callback(JSON.parse(body));
+      result = JSON.parse(body);
+      if (result instanceof Error) {
+        console.log("Error parsing JSON:", body);
+      }
+      else callback(result);
     }
     response.on('data', append_chunk);
     response.on('end', parse_body);
