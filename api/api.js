@@ -131,7 +131,9 @@ module.exports.add_result_by_name = function(name, results, res_cb) {
   if (!id) {
     var add_result_callback = function(res) {
       id = monitor_name_cache[name];
-      add_result(id, results,res_cb);
+      if (id)
+        add_result(id, results,res_cb);
+      else console.log("Monitor " + name + " doesn't exist");
     }
     get_monitors(add_result_callback);
   }

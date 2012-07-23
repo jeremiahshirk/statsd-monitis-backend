@@ -37,7 +37,7 @@ function encode_result_params(params_ary) {
 monitis.add_result(123456, {size: 123}, print_body);
 // monitis.get({action: 'getMonitors'},print_body);
 //monitis.get_monitors(print_body);
-//monitis.add_result_by_name('blah dir', {size: 123}, print_body);
+monitis.add_result_by_name('blah dir', {size: 123}, print_body);
 
 //monitis.post({action: 'deleteMonitor', monitorId: '31488'}, print_body);
 
