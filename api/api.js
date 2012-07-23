@@ -102,8 +102,10 @@ module.exports.get_monitor_info = function(monitorId, res_cb) {
 }
 
 var monitor_name_cache = new Object();
-module.exports.get_monitors = function(tag, res_cb) {
-  params = {action: 'getMonitors', tag: tag};
+function get_monitors(res_cb) {
+  // params = {action: 'getMonitors', tag: tag};
+  // test with no tag
+  params = {action: 'getMonitors'};
   var update_name_cache = function(monitors) {
     for(var i=0; i<monitors.length; i++) {
       monitor_name_cache[monitors[i]['name']] = monitors[i]['id']
@@ -113,7 +115,7 @@ module.exports.get_monitors = function(tag, res_cb) {
   monitis_get(params,update_name_cache);
 }
 
-module.exports.add_result = function(monitorId,results,res_cb) {
+function add_result(monitorId,results,res_cb) {
   // POST: action, monitorId, checktime, results
   monitis_post({
     action: 'addResult',
@@ -125,15 +127,24 @@ module.exports.add_result = function(monitorId,results,res_cb) {
 }
 
 module.exports.add_result_by_name = function(name, results, res_cb) {
-  // need to look up monitor name, and get monitorId
-  // if the id isn't in the table, look it up, setting this as the callback
-  // need to change a parameter to know if we've been here before
-  
-  
+  var id = monitor_name_cache[name];
+  if (!id) {
+    var add_result_callback = function(res) {
+      id = monitor_name_cache[name];
+      add_result(id, results,res_cb);
+    }
+    get_monitors(add_result_callback);
+  }
+  else {
+    add_result(id, results,res_cb);
+  }
 }
 
-module.exports.post = monitis_post
-module.exports.get = monitis_get
+module.exports.post = monitis_post;
+module.exports.get = monitis_get;
+module.exports.get_monitors = get_monitors;
+module.exports.add_result = add_result;
+
 // module.exports.get_monitor_info = get_monitor_info
 
 // Testing only if this files is run directly
