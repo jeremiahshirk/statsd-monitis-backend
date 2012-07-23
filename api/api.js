@@ -126,6 +126,75 @@ function add_result(monitorId,results,res_cb) {
   res_cb);
 }
 
+function encode_result_params(params_ary) {
+  // in: array of objects
+  // objects have attributes with keys in (name,displayName,uom,dataType)
+  // i.e. {name: 'foo',displayName: 'The Foo', uom: 'ms', dataType: 2}
+  var encoded = [];
+  for (var i=0; i<params_ary.length; i++) {
+    var params = params_ary[i];
+    encoded.push(
+      encodeURI(params['name']) + ':' +
+      encodeURI(params['displayName']) + ':' +
+      encodeURI(params['uom']) + ':' +
+      encodeURI(params['dataType']));
+  }
+  return encoded.join(';');
+}
+
+function add_statsd_monitor(name, type, res_cb) {
+  // Specialized add_monitor for statsd
+  // given only a name and type in (timer, counter, gauge)
+  // infer all of the other parameters in the Monitis API
+  //    timer: multiple result params (just avg  and sum for now)
+  //    counter: single result param, name count, type int
+  //    gauge: single result param, name gauge, type int
+    
+  // construct the call to add
+  var add_params = {
+    action: 'addMonitor',
+    name: name,
+    tag: 'statsd',
+  };
+  result_params_stage = [];
+  if (type == 'counter') {
+    result_params_stage.push({
+      name: 'count',
+      displayName: 'count',
+      uom: '',
+      dataType: 2
+    });
+  }
+  else if (type == 'gauge') {
+    result_params_stage.push({
+      name: 'gauge',
+      displayName: 'gauge',
+      uom: '',
+      dataType: 2
+    });
+  }
+  else if (type == 'timer') {
+    result_params_stage.push({
+      name: 'sum',
+      displayName: 'sum',
+      uom: '',
+      dataType: 2
+    });
+    result_params_stage.push({
+      name: 'avg',
+      displayName: 'avg',
+      uom: '',
+      dataType: 4 // use float
+    });
+  }
+  else {
+    console.log("Invalid type: " + type)
+  }
+  add_params['resultParams'] = encode_result_params(result_params_stage);
+  console.log(add_params);
+  monitis_post(add_params, res_cb);
+}
+
 module.exports.add_result_by_name = function(name, results, res_cb) {
   var id = monitor_name_cache[name];
   if (!id) {
@@ -146,6 +215,7 @@ module.exports.post = monitis_post;
 module.exports.get = monitis_get;
 module.exports.get_monitors = get_monitors;
 module.exports.add_result = add_result;
+module.exports.add_statsd_monitor = add_statsd_monitor;
 
 // module.exports.get_monitor_info = get_monitor_info
 

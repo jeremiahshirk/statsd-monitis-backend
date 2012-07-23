@@ -34,23 +34,24 @@ function encode_result_params(params_ary) {
   return encoded.join(';');
 }
 //monitis.get_monitor_info(1723, console.log);
-monitis.add_result(123456, {size: 123}, print_body);
+// monitis.add_result(123456, {size: 123}, print_body);
 // monitis.get({action: 'getMonitors'},print_body);
 //monitis.get_monitors(print_body);
-monitis.add_result_by_name('blah dir', {size: 123}, print_body);
+//monitis.add_result_by_name('blah dir', {size: 123}, print_body);
 
 //monitis.post({action: 'deleteMonitor', monitorId: '31488'}, print_body);
 
 // create monitors for use with statsd
-// addMonitor(resultParams, name, tag)
 // monitis.post({
 //   action: 'addMonitor',
 //   resultParams: encode_result_params([{
 //     name: 'foo',
 //     displayName: 'The Foo',
-//     uom: 's',
+//     uom: '',
 //     dataType: 2
 //   }]),
 //   name: 'a.b.count',
 //   tag: 'statsd'
 // }, print_body);
+
+monitis.add_statsd_monitor('a.b.testTimer', 'timer', print_body);
