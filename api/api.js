@@ -206,7 +206,10 @@ module.exports.add_result_by_name = function(name, results, res_cb) {
       id = monitor_name_cache[name];
       if (id)
         add_result(id, results,res_cb);
-      else console.log("Monitor " + name + " doesn't exist");
+      else {
+        console.log("Monitor " + name + " doesn't exist");
+        res_cb({status: 'no such monitor', name: name})
+      }
     }
     get_monitors(add_result_callback);
   }
