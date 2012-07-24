@@ -178,7 +178,7 @@ function add_statsd_monitor(name, type, res_cb) {
       name: 'gauge',
       displayName: 'gauge',
       uom: '',
-      dataType: 2
+      dataType: 4
     });
   }
   else if (type == 'timer') {
@@ -186,13 +186,13 @@ function add_statsd_monitor(name, type, res_cb) {
       name: 'sum',
       displayName: 'sum',
       uom: '',
-      dataType: 2
+      dataType: 4
     });
     result_params_stage.push({
       name: 'avg',
       displayName: 'avg',
       uom: '',
-      dataType: 4 // use float
+      dataType: 4
     });
   }
   else {
