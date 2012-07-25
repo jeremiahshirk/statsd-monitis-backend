@@ -26,6 +26,12 @@ var flush_stats = function monitis_flush(ts, metrics) {
     monitis.add_result_by_name(
       key, {gauge: metrics.counters[key]}, missing_monitor_cb(key,'gauge'));
   }
+  for (key in metrics.raws) {
+    var name = metrics.raws[key][0];
+    var value = metrics.raws[key][1];
+    monitis.add_result_by_name(
+      name, {raw: value}, missing_monitor_cb(name,'raw'));
+  }
   for (key in metrics.timers) {
     var sum = 0;
     var avg = 0;

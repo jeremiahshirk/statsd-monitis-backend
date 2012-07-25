@@ -181,6 +181,14 @@ function add_statsd_monitor(name, type, res_cb) {
       dataType: 4
     });
   }
+  else if (type == 'raw') {
+    result_params_stage.push({
+      name: 'raw',
+      displayName: 'Value',
+      uom: '',
+      dataType: 4
+    });
+  }
   else if (type == 'timer') {
     result_params_stage.push({
       name: 'sum',
