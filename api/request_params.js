@@ -1,17 +1,20 @@
-var request_params = function (params) {
-  var base_params = {
-    apikey: global.monitis.apikey
-    // Omit defaults, to make smaller requests
-    // output: 'JSON',
-    // version: '2',
-    // validation: 'HMACSHA1'
-  };
-  
+/*jslint node: true, indent: 2, forin: true */
+
+function request_params(params) {
+  'use strict';
+  var base_params, merged_params, key;
+
+  // Omit defaults, to make smaller requests
+  // output: 'JSON',
+  // version: '2',
+  // validation: 'HMACSHA1'  
+  base_params = { apikey: global.monitis.apikey };
   merged_params = {};
-  for (var key in base_params) {
+
+  for (key in base_params) {
     merged_params[key] = base_params[key];
-  }  
-  for (var key in params) {
+  }
+  for (key in params) {
     merged_params[key] = params[key];
   }
   return merged_params;

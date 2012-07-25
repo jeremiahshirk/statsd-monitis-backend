@@ -1,3 +1,5 @@
+/*jslint node: true, indent: 2, plusplus: true */
+
 var monitis = require("./api/api.js");
 
 // function print_body(response){
@@ -15,21 +17,24 @@ var monitis = require("./api/api.js");
 // }
 
 function print_body(body) {
+  'use strict';
   console.log(body);
 }
 
 function encode_result_params(params_ary) {
+  'use strict';
+  var encoded, i, params;
+
   // in: array of objects
   // objects have attributes with keys in (name,displayName,uom,dataType)
   // i.e. {name: 'foo',displayName: 'The Foo', uom: 'ms', dataType: 2}
-  var encoded = [];
-  for (var i=0; i<params_ary.length; i++) {
-    var params = params_ary[i];
+  encoded = [];
+  for (i = 0; i < params_ary.length; i++) {
+    params = params_ary[i];
     encoded.push(
-      encodeURI(params['name']) + ':' +
-      encodeURI(params['displayName']) + ':' +
-      encodeURI(params['uom']) + ':' +
-      encodeURI(params['dataType']));
+      encodeURI(params.name) + ':' + encodeURI(params.displayName) + ':'
+        + encodeURI(params.uom) + ':' + encodeURI(params.dataType)
+    );
   }
   return encoded.join(';');
 }
