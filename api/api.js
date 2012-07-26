@@ -13,10 +13,6 @@ var config, monitor_name_cache;
 // cache object used by get_monitors
 monitor_name_cache = {};
 
-// API configs, default values for host and path
-// apikey and secretkey must be provided externally
-//config = {host: 'monitis.com', path: '/customMonitorApi'};
-
 function format_query_params(params) {
   'use strict';
   return querystring.stringify(params);
@@ -74,10 +70,16 @@ function res_parser(callback) {
     append_chunk = function (chunk) {
       body += chunk;
     };
-    parse_body = function () {
-      var result = JSON.parse(body);
+    parse_body = function parse_body() {
+      try {
+        var result = JSON.parse(body);
+      }
+      catch(err) {
+        result = err;
+      }
       if (result instanceof Error) {
-        console.log("Error parsing JSON:", body);
+        console.log("Error parsing JSON: ", result, "\n", body , "\n");
+        return;
       } else {
         callback(result);
       }
