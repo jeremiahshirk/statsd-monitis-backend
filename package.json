@@ -1,0 +1,22 @@
+{
+  "author": "Jeremiah Shirk <jshirk@gmail.com>",
+  "name": "statsd-monitis-backend",
+  "description": "A StatsD backend for Monitis",
+  "version": "0.0.1",
+  "homepage": "https://github.com/jeremiahshirk/statsd-monitis-backend",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jeremiahshirk/statsd-monitis-backend.git"
+  },
+  "keywords": [
+    "monitis",
+    "metrics",
+    "statsd"
+  ],
+  "engines": {
+    "node": ">=0.6"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "main": "backend.js"
+}
