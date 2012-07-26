@@ -3,9 +3,7 @@
 var https = require('https');
 var querystring = require('querystring');
 
-// var api_config = require('./api_config.js').api_config();
 var checksum = require('./auth.js').checksum;
-// this construct is weird?
 var request_params = require('./request_params.js').request_params;
 
 var config, monitor_name_cache;
@@ -121,7 +119,6 @@ function monitis_post(call_params, res_cb) {
 function checktime() {
   'use strict';
   // number of milliseconds since January 1, 1970, 00:00:00 GMT
-  // aka epoch time
   return new Date().getTime();
 }
 
@@ -185,13 +182,9 @@ function add_statsd_monitor(name, type, res_cb) {
   'use strict';
   var add_params, result_params_stage;
   // Specialized add_monitor for statsd
-  // given only a name and type in (timer, counter, gauge)
+  // given only a name and type in (timer, counter, gauge, raw)
   // infer all of the other parameters in the Monitis API
-  //    timer: multiple result params (just avg  and sum for now)
-  //    counter: single result param, name count, type int
-  //    gauge: single result param, name gauge, type int
 
-  // construct the call to add
   add_params = {
     action: 'addMonitor',
     name: name,
