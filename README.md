@@ -51,9 +51,9 @@ In a new StatsD install, you'll typically copy exampleConfig.js to local.config.
 
 ### Running StatsD
 
-In the same StatsD directory where you used NPM to install statsd-monitis-backend and edited local.config, use node to run StatsD.
+In the same StatsD directory where you used NPM to install _statsd-monitis-backend_ and edited _local.config_, use node to run StatsD.
 
-	$ node statsd.js local.config
+	$ node stats.js local.config
 
 ## More information
 
