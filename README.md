@@ -22,6 +22,13 @@ StatsD can be installed via npm, or cloned from GitHub.  Using Git, clone your o
 
 	$ git clone git://github.com/etsy/statsd.git
 
+### statsd-monitis-backend
+
+In your StatsD directory, you can use NPM to install statsd-monitis-backend.
+
+	$ cd statsd
+	$ npm install https://github.com/jeremiahshirk/statsd-monitis-backend/tarball/master
+
 ### Monitis account
 
 Sign up for a Monitis account at <https://www.monitis.com/free_signup.jsp>.  Once signed up, log in at <https://www.monitis.com/login.jsp>.  When you're logged in, you can retrieve API keys under:
@@ -41,6 +48,12 @@ In a new StatsD install, you'll typically copy exampleConfig.js to local.config.
 	    secretkey: '_your_secret_key_'
 	  }
 	}
+
+### Running StatsD
+
+In the same StatsD directory where you used NPM to install statsd-monitis-backend and edited local.config, use node to run StatsD.
+
+	$ node statsd.js local.config
 
 ## More information
 
