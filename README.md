@@ -57,4 +57,4 @@ In the same StatsD directory where you used NPM to install _statsd-monitis-backe
 
 ## More information
 
-For more information, contact Jeremiah Shirk <jshirk@gmail.com>.
+For more information, contact Jeremiah Shirk,  <jshirk@gmail.com>.
