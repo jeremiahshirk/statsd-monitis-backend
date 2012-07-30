@@ -5,6 +5,7 @@ var querystring = require('querystring');
 
 var checksum = require('./auth.js').checksum;
 var request_params = require('./request_params.js').request_params;
+var util = require('./util.js');
 
 var config, monitor_name_cache;
 
@@ -21,7 +22,7 @@ function get(host, path, call_params, res_cb) {
   var api_params, call_checksum, query;
   api_params = request_params(call_params);
   // debugging 
-  console.log('GET: \n', api_params);
+  util.debug('GET: \n', api_params);
   // call_checksum = checksum(api_config.monitis_secretkey, api_params);
   api_params.checksum = checksum(global.monitis.secretkey, api_params);
   query = format_query_params(api_params);
@@ -36,7 +37,7 @@ function post(host, path, call_params, res_cb) {
   var api_params, post_data, post_options, post_req;
   api_params = request_params(call_params);
   // debugging 
-  console.log('POST: \n', api_params);
+  util.debug('POST: \n', api_params);
   // call_checksum = checksum(api_config['monitis_secretkey'],api_params);
   api_params.checksum = checksum(global.monitis.secretkey, api_params);
   post_data = format_query_params(api_params);
@@ -227,7 +228,7 @@ function add_statsd_monitor(name, type, res_cb) {
     console.log("Invalid type: " + type);
   }
   add_params.resultParams = encode_result_params(result_params_stage);
-  console.log(add_params);
+  util.debug(add_params);
   monitis_post(add_params, res_cb);
 }
 

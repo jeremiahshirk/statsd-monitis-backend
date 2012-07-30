@@ -1,5 +1,5 @@
 function debug() {
-	if (global.monitis.debug) {
+	if (global.monitis.debug === true) {
 		console.log(arguments);
 	}
 }
