@@ -61,7 +61,7 @@ function post(host, path, call_params, res_cb) {
 
 function res_parser(callback) {
   'use strict';
-  var parser;
+  var parser, result;
   // return a function that can be used as an HTTPS response callback
   // which in turn calls the arg callback with the parsed JSON body
   parser = function parser(response) {
@@ -71,7 +71,7 @@ function res_parser(callback) {
     };
     parse_body = function parse_body() {
       try {
-        var result = JSON.parse(body);
+        result = JSON.parse(body);
       }
       catch(err) {
         result = err;
@@ -79,9 +79,8 @@ function res_parser(callback) {
       if (result instanceof Error) {
         console.log("Error parsing JSON: ", result, "\n", body , "\n");
         return;
-      } else {
-        callback(result);
       }
+      callback(result);
     };
     response.on('data', append_chunk);
     response.on('end', parse_body);

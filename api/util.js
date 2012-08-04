@@ -1,7 +1,10 @@
+/*jslint node: true, indent: 2 */
+
 function debug() {
-	if (global.monitis.debug === true) {
-		console.log(arguments);
-	}
+  'use strict';
+  if (global.monitis.debug === true) {
+    console.log(arguments);
+  }
 }
 
 module.exports.debug = debug;
