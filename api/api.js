@@ -213,14 +213,38 @@ function add_statsd_monitor(name, type, res_cb) {
     result_params_stage.push({
       name: 'sum',
       displayName: 'sum',
-      uom: '',
+      uom: 'ms',
+      dataType: 2
+    });
+    result_params_stage.push({
+      name: 'mean',
+      displayName: 'mean',
+      uom: 'ms',
       dataType: 4
     });
     result_params_stage.push({
-      name: 'avg',
-      displayName: 'avg',
+      name: 'upper',
+      displayName: 'upper',
+      uom: 'ms',
+      dataType: 2
+    });
+    result_params_stage.push({
+      name: 'lower',
+      displayName: 'lower',
+      uom: 'ms',
+      dataType: 2
+    });
+    result_params_stage.push({
+      name: 'upper_90',
+      displayName: 'upper_90',
+      uom: 'ms',
+      dataType: 2
+    });
+    result_params_stage.push({
+      name: 'count',
+      displayName: 'count',
       uom: '',
-      dataType: 4
+      dataType: 2
     });
   }
   else {
