@@ -87,7 +87,7 @@ exports.init = function monitis_init(startup_time, config, events) {
   // read monitis config
   global.monitis = config.monitis;
   if (!config.monitis.host) {
-    global.monitis.host = 'monitis.com';
+    global.monitis.host = 'api.monitis.com';
   }
   if (!config.monitis.path) {
     global.monitis.path = '/customMonitorApi';
