@@ -27,9 +27,6 @@ function monitis_flush(ts, metrics) {
   var key,    // iteration over members of metrics
     name,     // iteration over metrics.raws
     value,
-    sum,      // iteration over metrics.timers
-    avg,
-    times,
     i;        // iteration in for loop
 
   console.log("Called flush_stats");
@@ -55,18 +52,12 @@ function monitis_flush(ts, metrics) {
     }
   }
   for (key in metrics.timers) {
-    if (metrics.timers.hasOwnProperty(key)) {
-      sum = 0;
-      avg = 0;
-      times = metrics.timers[key];
-      for (i = 0; i < times.length; i++) {
-        sum += times[i];
-      }
-      if (times.length > 0) {
-        avg = sum / times.length;
-      }
+    if (metrics.timer_data.hasOwnProperty(key)) {
+      var data = metrics.timer_data[key]
       monitis.add_result_by_name(key,
-        {sum: sum, avg: avg}, missing_monitor_cb(key, 'timer'));
+        {sum: data.sum, mean: data.mean, upper: data.upper,
+          lower: data.lower, upper_90: data.upper_90, count: data.count},
+        missing_monitor_cb(key, 'timer'));
       util.debug(metrics.timers);
     }
   }
@@ -87,7 +78,7 @@ exports.init = function monitis_init(startup_time, config, events) {
   // read monitis config
   global.monitis = config.monitis;
   if (!config.monitis.host) {
-    global.monitis.host = 'monitis.com';
+    global.monitis.host = 'api.monitis.com';
   }
   if (!config.monitis.path) {
     global.monitis.path = '/customMonitorApi';
